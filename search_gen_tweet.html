@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ツイート検索</title>
+</head>
+<body>
+    <h1>ツイート検索</h1>
+    <form id="search-form">
+        <input type="text" id="query" name="query" placeholder="検索クエリ">
+        <button type="submit">検索</button>
+    </form>
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('search-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const query = document.getElementById('query').value;
+            const response = await fetch(`https://www.kenkensz9.com:7999/tweets?query=${encodeURIComponent(query)}`);
+            const tweets = await response.json();
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+            tweets.forEach(tweet => {
+                const tweetDiv = document.createElement('div');
+                tweetDiv.textContent = tweet.text;
+                resultsDiv.appendChild(tweetDiv);
+            });
+        });
+    </script>
+</body>
+</html>
+
